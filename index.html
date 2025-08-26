@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CalcMaster - Универсальный калькулятор</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header / Шапка -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <h1 class="logo">CalcMaster</h1>
+                <div class="header-controls">
+                    <input type="search" class="search-input" placeholder="Поиск калькулятора...">
+                    <button class="theme-toggle" aria-label="Переключить тему">
+                        <svg class="sun-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                        <svg class="moon-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content / Основной контент -->
+    <main class="main">
+        <div class="container">
+            <!-- Categories / Категории -->
+            <nav class="categories">
+                <button class="category-btn active" data-category="all">Все</button>
+                <button class="category-btn" data-category="repair">Ремонт</button>
+                <button class="category-btn" data-category="construction">Строительство</button>
+                <button class="category-btn" data-category="electric">Электрика</button>
+                <button class="category-btn" data-category="plumbing">Сантехника</button>
+                <button class="category-btn" data-category="cooking">Кулинария</button>
+                <button class="category-btn" data-category="garden">Сад</button>
+                <button class="category-btn" data-category="auto">Авто</button>
+                <button class="category-btn" data-category="other">Другое</button>
+            </nav>
+
+            <!-- Calculator Grid / Сетка калькуляторов -->
+            <div class="calculators-grid" id="calculatorsGrid">
+                <!-- Calculators will be dynamically inserted here -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Calculator Modal / Модальное окно калькулятора -->
+    <div class="modal" id="calculatorModal">
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            <h2 class="modal-title" id="modalTitle"></h2>
+            <div class="calculator-form" id="calculatorForm">
+                <!-- Calculator inputs will be dynamically inserted here -->
+            </div>
+            <div class="calculator-result" id="calculatorResult">
+                <h3>Результат:</h3>
+                <div class="result-value" id="resultValue">—</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer / Подвал -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 CalcMaster. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+</html>
