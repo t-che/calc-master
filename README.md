@@ -15,7 +15,7 @@
 - [Разработка и кастомизация](#разработка-и-кастомизация)
 - [Лицензия](#лицензия)
 - [Контакты](#контакты)
-
+- [Демонстрация](https://t-che.github.io/calc-master/)
 ---
 
 ## Особенности
@@ -47,7 +47,7 @@
 
 1. **Склонируйте репозиторий**:
    ```bash
-   git clone https://github.com/your-username/calc-master.git
+   git clone https://github.com/t-che/calc-master.git
    ```
 2. **Перейдите в директорию проекта**:
    ```bash
@@ -176,8 +176,9 @@ calc-master/
 ## Контакты
 
 Если у вас есть вопросы или предложения, свяжитесь с нами:
-- **Email**: support@calcmaster.com
-- **GitHub Issues**: [Создать issue](https://github.com/your-username/calc-master/issues)
+
+- **GitHub Issues**: [Создать issue](https://github.com/t-che/calc-master/issues)
+- **Telegram**: @t_che
 
 ---
 
@@ -198,6 +199,7 @@ calc-master/
 - [Development and Customization](#development-and-customization)
 - [License](#license)
 - [Contact](#contact)
+- [Demo](https://t-che.github.io/calc-master/)
 
 ---
 
@@ -230,7 +232,7 @@ calc-master/
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/your-username/calc-master.git
+   git clone https://github.com/t-che/calc-master.git
    ```
 2. **Navigate to the project directory**:
    ```bash
@@ -359,5 +361,5 @@ This project is licensed under the MIT License. See the `LICENSE` file for detai
 ## Contact
 
 For questions or suggestions, contact us:
-- **Email**: support@calcmaster.com
-- **GitHub Issues**: [Create an issue](https://github.com/your-username/calc-master/issues)
+- **GitHub Issues**: [Создать issue](https://github.com/t-che/calc-master/issues)
+- **Telegram**: @t_che
