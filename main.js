@@ -3002,40 +3002,320 @@ const calculators = [
             
             return `Объем: ${volumeL.toFixed(0)} л, фильтр: ${filterPower.toFixed(0)} л/ч, нагреватель: ${heaterPower.toFixed(0)} Вт, рыб: до ${Math.floor(fishCount[inputs.fishType])} шт, грунт: ${substrate.toFixed(1)} кг`;
         }
+    },
+    {
+        id: 'home_gym',
+        title: 'Домашний спортзал',
+        description: 'Расчет оборудования для спортзала',
+        category: 'other',
+        icon: '🏋️',
+        inputs: [
+            { name: 'area', label: 'Площадь помещения (м²)', type: 'number', min: 4, max: 50 },
+            { name: 'goals', label: 'Цели тренировок', type: 'select', options: [
+                { value: 'cardio', text: 'Кардио' },
+                { value: 'strength', text: 'Силовые' },
+                { value: 'mixed', text: 'Смешанные' },
+                { value: 'yoga', text: 'Йога/пилатес' }
+            ]},
+            { name: 'budget', label: 'Бюджет', type: 'select', options: [
+                { value: 'minimal', text: 'Минимальный' },
+                { value: 'standard', text: 'Стандартный' },
+                { value: 'premium', text: 'Премиум' }
+            ]}
+        ],
+        calculate: (inputs) => {
+            const equipment = {
+                cardio: {
+                    minimal: 'Скакалка, коврик',
+                    standard: 'Беговая дорожка, коврик',
+                    premium: 'Беговая дорожка, велотренажер, эллипсоид'
+                },
+                strength: {
+                    minimal: 'Гантели разборные, турник',
+                    standard: 'Штанга, стойки, скамья, гантели',
+                    premium: 'Силовая рама, штанга, гантели, тренажеры'
+                },
+                mixed: {
+                    minimal: 'Гантели, коврик, турник',
+                    standard: 'Беговая дорожка, гантели, скамья',
+                    premium: 'Мультистанция, кардио-тренажер, свободные веса'
+                },
+                yoga: {
+                    minimal: 'Коврик, блоки, ремень',
+                    standard: 'Коврик, блоки, болстер, ремни',
+                    premium: 'Профессиональное оборудование для йоги'
+                }
+            };
+            
+            const flooring = inputs.area * (inputs.goals === 'strength' ? 1 : 0.5);
+            const mirrors = inputs.goals !== 'cardio' ? Math.ceil(inputs.area / 10) : 0;
+            
+                        return `${equipment[inputs.goals][inputs.budget]}, резиновое покрытие: ${flooring.toFixed(0)} м²${mirrors > 0 ? `, зеркала: ${mirrors} шт` : ''}`;
+        }
+    },
+    {
+        id: 'pet_supplies',
+        title: 'Расходы на питомца',
+        description: 'Расчет содержания домашнего животного',
+        category: 'other',
+        icon: '🐕',
+        inputs: [
+            { name: 'petType', label: 'Тип питомца', type: 'select', options: [
+                { value: 'cat', text: 'Кошка' },
+                { value: 'small_dog', text: 'Собака мелкая (до 10 кг)' },
+                { value: 'medium_dog', text: 'Собака средняя (10-25 кг)' },
+                { value: 'large_dog', text: 'Собака крупная (более 25 кг)' }
+            ]},
+            { name: 'foodType', label: 'Тип корма', type: 'select', options: [
+                { value: 'economy', text: 'Эконом' },
+                { value: 'premium', text: 'Премиум' },
+                { value: 'super_premium', text: 'Супер-премиум' }
+            ]},
+            { name: 'period', label: 'Период расчета', type: 'select', options: [
+                { value: 1, text: 'Месяц' },
+                { value: 12, text: 'Год' }
+            ]}
+        ],
+        calculate: (inputs) => {
+            const foodConsumption = {
+                cat: { economy: 3, premium: 2.5, super_premium: 2 },
+                small_dog: { economy: 4, premium: 3, super_premium: 2.5 },
+                medium_dog: { economy: 8, premium: 6, super_premium: 5 },
+                large_dog: { economy: 15, premium: 12, super_premium: 10 }
+            };
+            
+            const foodKg = foodConsumption[inputs.petType][inputs.foodType] * inputs.period;
+            const litter = inputs.petType === 'cat' ? 5 * inputs.period : 0;
+            const vetVisits = inputs.period === 12 ? 2 : 0.2;
+            const grooming = inputs.petType.includes('dog') ? inputs.period : inputs.period / 3;
+            
+            return `Корм: ${foodKg} кг${litter > 0 ? `, наполнитель: ${litter} кг` : ''}, ветеринар: ${vetVisits.toFixed(1)} визитов, груминг: ${grooming.toFixed(0)} раз`;
+        }
+    },
+    {
+        id: 'greenhouse_heating',
+        title: 'Отопление теплицы',
+        description: 'Расчет обогрева теплицы',
+        category: 'other',
+        icon: '🌡️',
+        inputs: [
+            { name: 'length', label: 'Длина теплицы (м)', type: 'number', min: 2, max: 20 },
+            { name: 'width', label: 'Ширина теплицы (м)', type: 'number', min: 2, max: 10 },
+            { name: 'height', label: 'Высота теплицы (м)', type: 'number', min: 2, max: 4, value: 2.5 },
+            { name: 'tempDiff', label: 'Разница температур (°C)', type: 'number', min: 10, max: 40, value: 20 },
+            { name: 'material', label: 'Материал покрытия', type: 'select', options: [
+                { value: 5.8, text: 'Стекло 4мм' },
+                { value: 3.5, text: 'Поликарбонат 4мм' },
+                { value: 2.3, text: 'Поликарбонат 8мм' },
+                { value: 1.5, text: 'Поликарбонат 16мм' }
+            ]}
+        ],
+        calculate: (inputs) => {
+            // Площадь поверхности теплицы (упрощенно)
+            const surfaceArea = 2 * inputs.length * inputs.height + 
+                               2 * inputs.width * inputs.height + 
+                               inputs.length * inputs.width;
+            
+            // Теплопотери = площадь × коэффициент × разница температур
+            const heatLoss = surfaceArea * inputs.material * inputs.tempDiff;
+            const heatLossKW = heatLoss / 1000;
+            
+            // Расход топлива
+            const electricKWh = heatLossKW * 24; // кВт·ч в сутки
+            const gasM3 = heatLossKW * 2.4; // м³ газа в сутки
+            
+            return `Теплопотери: ${heatLossKW.toFixed(1)} кВт, электричество: ${electricKWh.toFixed(0)} кВт·ч/сутки, газ: ${gasM3.toFixed(1)} м³/сутки`;
+        }
+    },
+    {
+        id: 'sauna_materials',
+        title: 'Материалы для бани',
+        description: 'Расчет материалов для сауны/бани',
+        category: 'other',
+        icon: '🧖',
+        inputs: [
+            { name: 'length', label: 'Длина парной (м)', type: 'number', min: 1.5, max: 5, step: 0.1 },
+            { name: 'width', label: 'Ширина парной (м)', type: 'number', min: 1.5, max: 4, step: 0.1 },
+            { name: 'height', label: 'Высота парной (м)', type: 'number', min: 2, max: 2.5, step: 0.1, value: 2.2 },
+            { name: 'wood', label: 'Порода дерева', type: 'select', options: [
+                { value: 'linden', text: 'Липа' },
+                { value: 'aspen', text: 'Осина' },
+                { value: 'cedar', text: 'Кедр' },
+                { value: 'alder', text: 'Ольха' }
+            ]}
+        ],
+        calculate: (inputs) => {
+            const wallArea = 2 * (inputs.length + inputs.width) * inputs.height;
+            const ceilingArea = inputs.length * inputs.width;
+            const totalArea = wallArea + ceilingArea;
+            
+            // Вагонка с учетом отходов
+            const lining = totalArea * 1.15;
+            
+            // Утеплитель (100мм)
+            const insulation = totalArea * 0.1;
+            
+            // Фольга
+            const foil = totalArea * 1.1;
+            
+            // Полки (30% от площади пола)
+            const benchArea = inputs.length * inputs.width * 0.3;
+            
+            // Печь (1 кВт на 1 м³)
+            const volume = inputs.length * inputs.width * inputs.height;
+            const stovePower = Math.ceil(volume);
+            
+            return `Вагонка: ${lining.toFixed(1)} м², утеплитель: ${insulation.toFixed(1)} м³, фольга: ${foil.toFixed(1)} м², полки: ${benchArea.toFixed(1)} м², печь: ${stovePower} кВт`;
+        }
+    },
+    {
+        id: 'workshop_tools',
+        title: 'Оборудование мастерской',
+        description: 'Базовый набор инструментов',
+        category: 'other',
+        icon: '🔧',
+        inputs: [
+            { name: 'type', label: 'Тип мастерской', type: 'select', options: [
+                { value: 'wood', text: 'Столярная' },
+                { value: 'metal', text: 'Слесарная' },
+                { value: 'auto', text: 'Автомобильная' },
+                { value: 'universal', text: 'Универсальная' }
+            ]},
+            { name: 'level', label: 'Уровень оснащения', type: 'select', options: [
+                { value: 'hobby', text: 'Хобби' },
+                { value: 'semi_pro', text: 'Полупрофессиональный' },
+                { value: 'pro', text: 'Профессиональный' }
+            ]},
+            { name: 'area', label: 'Площадь мастерской (м²)', type: 'number', min: 6, max: 100 }
+        ],
+        calculate: (inputs) => {
+            const tools = {
+                wood: {
+                    hobby: 'Ручной инструмент, дрель, лобзик',
+                    semi_pro: '+ циркулярка, фрезер, шлифмашина',
+                    pro: '+ станки (рейсмус, фуганок, токарный)'
+                },
+                metal: {
+                    hobby: 'Ручной инструмент, дрель, болгарка',
+                    semi_pro: '+ сварочный аппарат, точило',
+                    pro: '+ токарный станок, фрезерный станок'
+                },
+                auto: {
+                    hobby: 'Набор ключей, домкрат, компрессор',
+                    semi_pro: '+ подъемник/яма, сварка',
+                    pro: '+ диагностическое оборудование, спецтехника'
+                },
+                universal: {
+                    hobby: 'Базовый набор инструментов',
+                    semi_pro: 'Расширенный набор + электроинструмент',
+                    pro: 'Полный набор + станки'
+                }
+            };
+            
+            const workbenches = Math.ceil(inputs.area / 15);
+            const storage = Math.ceil(inputs.area / 10);
+            
+            return `${tools[inputs.type][inputs.level]}, верстаки: ${workbenches} шт, стеллажи: ${storage} шт`;
+        }
+    },
+    {
+        id: 'event_tent',
+        title: 'Шатер для мероприятий',
+        description: 'Расчет размера шатра',
+        category: 'other',
+        icon: '🎪',
+        inputs: [
+            { name: 'guests', label: 'Количество гостей', type: 'number', min: 10, max: 500 },
+            { name: 'eventType', label: 'Тип мероприятия', type: 'select', options: [
+                { value: 'standing', text: 'Фуршет (стоя)' },
+                { value: 'mixed', text: 'Смешанный' },
+                { value: 'seated', text: 'Банкет (сидя)' },
+                { value: 'concert', text: 'Концерт' }
+            ]},
+            { name: 'extras', label: 'Дополнительно', type: 'select', options: [
+                { value: 1, text: 'Только гости' },
+                { value: 1.2, text: '+ сцена/танцпол' },
+                { value: 1.4, text: '+ сцена + бар' }
+            ]}
+        ],
+        calculate: (inputs) => {
+            const spacePerPerson = {
+                standing: 0.5,
+                mixed: 1,
+                seated: 1.5,
+                concert: 0.3
+            };
+            
+            const baseArea = inputs.guests * spacePerPerson[inputs.eventType] * inputs.extras;
+            
+            // Стандартные размеры шатров
+            const tentSizes = [
+                { area: 25, size: '5×5' },
+                { area: 50, size: '5×10' },
+                { area: 100, size: '10×10' },
+                { area: 150, size: '10×15' },
+                { area: 200, size: '10×20' },
+                { area: 300, size: '15×20' },
+                { area: 500, size: '20×25' }
+            ];
+            
+            const tent = tentSizes.find(t => t.area >= baseArea) || tentSizes[tentSizes.length - 1];
+            
+            // Дополнительное оборудование
+            const tables = inputs.eventType === 'seated' ? Math.ceil(inputs.guests / 8) : 0;
+            const chairs = inputs.eventType !== 'standing' ? inputs.guests : 0;
+            
+            return `Шатер ${tent.size} м (${tent.area} м²)${tables > 0 ? `, столы: ${tables}` : ''}${chairs > 0 ? `, стулья: ${chairs}` : ''}`;
+        }
+    },
+    {
+        id: 'storage_unit',
+        title: 'Складское помещение',
+        description: 'Расчет стеллажей для склада',
+        category: 'other',
+        icon: '📦',
+        inputs: [
+            { name: 'area', label: 'Площадь склада (м²)', type: 'number', min: 10, max: 1000 },
+            { name: 'height', label: 'Высота помещения (м)', type: 'number', min: 2.5, max: 10, step: 0.5 },
+            { name: 'loadType', label: 'Тип груза', type: 'select', options: [
+                { value: 'light', text: 'Легкий (до 100 кг/м²)' },
+                { value: 'medium', text: 'Средний (100-500 кг/м²)' },
+                { value: 'heavy', text: 'Тяжелый (более 500 кг/м²)' }
+            ]},
+            { name: 'access', label: 'Доступ к товару', type: 'select', options: [
+                { value: 'manual', text: 'Ручной' },
+                { value: 'forklift', text: 'Погрузчик' }
+            ]}
+        ],
+        calculate: (inputs) => {
+            // Полезная площадь (70% от общей)
+            const usableArea = inputs.area * 0.7;
+            
+            // Высота стеллажей
+            const rackHeight = inputs.access === 'manual' ? Math.min(2.5, inputs.height - 0.5) : inputs.height - 1;
+            
+            // Количество ярусов
+            const tiers = Math.floor(rackHeight / 0.5);
+            
+            // Площадь стеллажей
+            const rackArea = usableArea * 0.6; // 60% под стеллажи, 40% проходы
+                        // Количество стеллажных секций (1.2м × 0.6м)
+            const rackSections = Math.floor(rackArea / 0.72);
+            
+            // Грузоподъемность
+            const loadCapacity = {
+                light: 200,
+                medium: 500,
+                heavy: 1000
+            };
+            
+            const totalCapacity = rackSections * tiers * loadCapacity[inputs.loadType];
+            
+            return `Стеллажи: ${rackSections} секций, ярусов: ${tiers}, общая нагрузка: ${(totalCapacity / 1000).toFixed(1)} т, полезная площадь: ${usableArea.toFixed(0)} м²`;
+        }
     }
-    //Вставить сюда
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //вставить сюда
 ];
+
 
 // Обновляем счетчик категорий в renderCalculators
 function getCategoryCount() {
